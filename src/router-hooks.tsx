@@ -22,7 +22,7 @@ import {
 import { baseUrl } from "./base";
 import { useLogging } from "./logging/logging-hooks";
 
-export type TabName = "api" | "ideas" | "reference" | "project";
+export type TabName = "api" | "ideas" | "reference" | "project" | "modelTraining";
 
 /**
  * An anchor-like navigation used for scroll positions.
@@ -64,7 +64,8 @@ const parse = (pathname: string): RouterState => {
       tab === "api" ||
       tab === "reference" ||
       tab === "ideas" ||
-      tab === "project"
+      tab === "project" ||
+      tab === "modelTraining"
     ) {
       return { tab, slug: anchorForParam(parts[1]) };
     }

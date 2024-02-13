@@ -2,8 +2,7 @@
  * (c) 2022, Micro:bit Educational Foundation and contributors
  *
  * SPDX-License-Identifier: MIT
- */
-import { Box, BoxProps, HStack, Stack, Text, VStack } from "@chakra-ui/layout";
+ */import { Box, BoxProps, HStack, Stack, Text, VStack } from "@chakra-ui/layout";
 import {
   Collapse,
   Tooltip,
@@ -11,6 +10,7 @@ import {
   useDisclosure,
   VisuallyHidden,
 } from "@chakra-ui/react";
+
 import { default as React, ReactNode, useCallback, useMemo } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { pythonSnippetMediaType } from "../../common/mediaTypes";

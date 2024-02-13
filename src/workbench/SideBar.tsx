@@ -18,12 +18,14 @@ import { ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
 import { IconType } from "react-icons";
 import { RiLightbulbFlashLine } from "react-icons/ri";
 import { VscFiles, VscLibrary } from "react-icons/vsc";
+import { FaCogs } from "react-icons/fa";
 import { useIntl } from "react-intl";
 import ErrorBoundary from "../common/ErrorBoundary";
 import PythonLogo from "../common/PythonLogo";
 import ApiArea from "../documentation/ApiArea";
 import IdeasArea from "../documentation/IdeasArea";
 import ReferenceArea from "../documentation/ReferenceArea";
+import MLArea from "../documentation/MLArea";
 import { flags } from "../flags";
 import ProjectArea from "../project/ProjectArea";
 import { TabName, useRouterState } from "../router-hooks";
@@ -95,6 +97,13 @@ const SideBar = ({
         contents: <ApiArea />,
         color: "gray.25",
         mb: "auto",
+      },
+      {
+        id: "modelTraining" as const,
+        title: "Model Training",
+        icon: FaCogs,
+        contents: <MLArea />,
+        color: "gray.25",
       },
       {
         id: "project" as const,
