@@ -96,14 +96,14 @@ const SideBar = ({
         icon: PythonLogo as IconType,
         contents: <ApiArea />,
         color: "gray.25",
-        mb: "auto",
       },
       {
         id: "modelTraining" as const,
-        title: "Model Training",
+        title: "Machine Learning",
         icon: FaCogs,
         contents: <MLArea />,
         color: "gray.25",
+        mb: "auto",
       },
       {
         id: "project" as const,

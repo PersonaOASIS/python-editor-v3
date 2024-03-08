@@ -1,0 +1,68 @@
+import * as tf from "@tensorflow/tfjs";
+import LayersMLModel from "./LayersMLModel";
+import { TrainingData } from "./DataPrep";
+export type LayersModelTrainingSettings = {
+  noOfEpochs: number;
+  noOfUnits: number;
+  validationSplit: number;
+  learningRate: number;
+  batchSize: number;
+};
+class LayersModelTrainer {
+  constructor(private settings: LayersModelTrainingSettings) {}
+  public async trainModel(trainingData: TrainingData): Promise<LayersMLModel> {
+    // Fetch data
+    const features: Array<number[]> = [];
+    const labels: Array<number[]> = [];
+    const numberOfClasses = trainingData.classes.length;
+
+    trainingData.classes.forEach((gestureClass, index) => {
+      gestureClass.samples.forEach((sample) => {
+        features.push(sample.value);
+
+        const label: number[] = new Array(numberOfClasses) as number[];
+        label.fill(0, 0, numberOfClasses);
+        label[index] = 1;
+        labels.push(label);
+      });
+    });
+
+    const tensorFeatures = tf.tensor(features);
+    const tensorLabels = tf.tensor(labels);
+
+    // Find the shape by looking at the first data point
+    const inputShape = [trainingData.classes[0].samples[0].value.length];
+
+    const input = tf.input({ shape: inputShape });
+    const normalizer = tf.layers.batchNormalization().apply(input);
+    const dense = tf.layers
+      .dense({ units: this.settings.noOfUnits, activation: "relu" })
+      .apply(normalizer);
+    const softmax = tf.layers
+      .dense({ units: numberOfClasses, activation: "softmax" })
+      .apply(dense) as tf.SymbolicTensor;
+
+    const model = tf.model({ inputs: input, outputs: softmax });
+
+    model.compile({
+      loss: "categoricalCrossentropy",
+      optimizer: tf.train.sgd(this.settings.learningRate),
+      metrics: ["accuracy"],
+    });
+
+    await model
+      .fit(tensorFeatures, tensorLabels, {
+        epochs: this.settings.noOfEpochs,
+        batchSize: this.settings.batchSize,
+        validationSplit: this.settings.validationSplit,
+      })
+      .catch((err) => {
+        console.error("tensorflow training process failed:", err);
+        return Promise.reject(err);
+      });
+    //const saveResult = await model.save("downloads://ml-model");
+    return Promise.resolve(new LayersMLModel(model));
+  }
+}
+
+export default LayersModelTrainer;

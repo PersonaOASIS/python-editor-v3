@@ -30,6 +30,9 @@ import SettingsProvider from "./settings/settings";
 import BeforeUnloadDirtyCheck from "./workbench/BeforeUnloadDirtyCheck";
 import { SelectionProvider } from "./workbench/use-selection";
 import Workbench from "./workbench/Workbench";
+import DragDropDialog from "./documentation/ml/DragDropDialog";
+import { useRef } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 
 const isMockDeviceMode = () =>
   // We use a cookie set from the e2e tests. Avoids having separate test and live builds.
@@ -61,8 +64,12 @@ const App = () => {
     forceApply: true,
   });
 
+  //deleted ProjectDropTarget remember -- added back but it might need to get changed
   const deployment = useDeployment();
   const { ConsentProvider } = deployment.compliance;
+
+  const aboutDialogDisclosure = useDisclosure();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   return (
     <>
       <VisualViewPortCSSVariables />
@@ -81,6 +88,11 @@ const App = () => {
                             <DialogProvider>
                               <RouterProvider>
                                 <ConsentProvider>
+                                  <DragDropDialog
+                                    isOpen={aboutDialogDisclosure.isOpen}
+                                    onClose={aboutDialogDisclosure.onClose}
+                                    finalFocusRef={menuButtonRef}
+                                  />
                                   <ProjectDropTarget>
                                     <ActiveEditorProvider>
                                       <Workbench />
