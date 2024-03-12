@@ -60,7 +60,7 @@ class LayersModelTrainer {
         console.error("tensorflow training process failed:", err);
         return Promise.reject(err);
       });
-    //const saveResult = await model.save("downloads://ml-model");
+    const saveResult = await model.save("downloads://ml-model");
     return Promise.resolve(new LayersMLModel(model));
   }
 }

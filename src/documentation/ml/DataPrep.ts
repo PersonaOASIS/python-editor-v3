@@ -27,7 +27,6 @@ export const prepData = (jsonString: string): [TrainingData, string[]] => {
   const classNames = jsonObjects.map((jsonObject) => {
     return jsonObject.name;
   });
-  console.log(classNames);
 
   const classes = jsonObjects.map((jsonObject) => {
     return {

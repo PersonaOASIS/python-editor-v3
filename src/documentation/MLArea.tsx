@@ -121,7 +121,7 @@ const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
       data-testid="open"
       icon={<RiFolderOpenLine />}
       tooltip="Open a file."
-      accept=".json"
+      accept=".json, .hex"
     />
   );
 };
@@ -142,13 +142,13 @@ const MLNode = (_: MLNodeProps) => {
 
   return (
     <div style={area}>
-      <DialogButton mode="button" minW="fit-content" />
       <OpenFileButton mode="button" minW="fit-content" />
-      <button onClick={reveal}>Reveal</button>
-      {showButton && <button onClick={sayHi}>Hidden</button>}
     </div>
   );
 };
+/*<DialogButton mode="button" minW="fit-content" />
+      <button onClick={reveal}>Reveal</button>
+      {showButton && <button onClick={sayHi}>Hidden</button>}*/
 
 const area: CSS.Properties = {
   display: "flex",
@@ -222,7 +222,7 @@ const MLNode = (_: MLNodeProps) => {
       {<p>Drag 'n' drop some files here, or click to select files</p>}
     </div>
   );
-};*/
+};
 
 //previous version before looking at HexFlashTool file
 

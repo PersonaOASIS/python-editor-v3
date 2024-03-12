@@ -93,8 +93,6 @@ const DialogDrag = (_: DialogDragProps) => {
           const jsonString = evt.target?.result;
           if (typeof jsonString == "string") {
             let [trainingData, classNames] = prepData(jsonString);
-            console.log(trainingData);
-            console.log(classNames);
             const layersModelTrainingSettings: LayersModelTrainingSettings = {
               noOfEpochs: 80,
               batchSize: 16,
