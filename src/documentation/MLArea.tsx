@@ -50,6 +50,7 @@ import { DataAndTrain } from "./ml/AllTogether";
 
 const dataAndTrain = new DataAndTrain();
 
+//use handleNavigate the same way reference is using, with the topic if for the return too and see if that works
 export const MLArea = () => {
   const [anchor, setAnchor] = useRouterTabSlug("modelTraining");
   const handleNavigate = useCallback(
@@ -88,6 +89,26 @@ const ActiveLevel = ({ anchor, onNavigate, direction }: ActiveLevelProps) => {
   const aboutDialogDisclosure = useDisclosure();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mlString = "Model Training";
+  const [ok, setOk] = useState(false);
+  if (ok == true) {
+    return (
+      <HeadedScrollablePanel
+        direction={direction}
+        heading={
+          <AreaHeading
+            name={mlString}
+            description={
+              "Import your data from https://ml-machine.org/ and train and use your model."
+            }
+          />
+        }
+      >
+        <div>
+          <p>Hello</p>
+        </div>
+      </HeadedScrollablePanel>
+    );
+  }
   return (
     <HeadedScrollablePanel
       direction={direction}
@@ -105,7 +126,7 @@ const ActiveLevel = ({ anchor, onNavigate, direction }: ActiveLevelProps) => {
         onClose={aboutDialogDisclosure.onClose}
         finalFocusRef={menuButtonRef}
       />
-      <MLNode />
+      <MLNode ok />
     </HeadedScrollablePanel>
   );
 };
@@ -126,28 +147,29 @@ const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
   );
 };
 
-interface MLNodeProps {}
+interface MLNodeProps {
+  ok: boolean;
+}
 
-const MLNode = (_: MLNodeProps) => {
+const MLNode = (ok: MLNodeProps) => {
   const sayHi = () => {
     console.log("Hi");
   };
   const [showButton, setShowButton] = useState(false);
 
   const reveal = () => {
-    if (dataAndTrain.model != undefined) {
-      setShowButton(true);
-    }
+    setOk(true);
   };
 
   return (
     <div style={area}>
       <OpenFileButton mode="button" minW="fit-content" />
+      <button onClick={reveal}>Reveal</button>
     </div>
   );
 };
 /*<DialogButton mode="button" minW="fit-content" />
-      <button onClick={reveal}>Reveal</button>
+      
       {showButton && <button onClick={sayHi}>Hidden</button>}*/
 
 const area: CSS.Properties = {
