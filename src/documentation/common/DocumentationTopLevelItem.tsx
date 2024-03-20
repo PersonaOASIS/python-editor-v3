@@ -20,7 +20,7 @@ import DocumentationIcon from "./DocumentationIcon";
 import DocumentationHeading from "./DocumentationHeading";
 import { heightMd, widthXl } from "../../common/media-queries";
 
-type DocType = "reference" | "api";
+type DocType = "reference" | "api" | "modelTraining";
 
 interface DocumentationTopLevelItemProps {
   name: string;

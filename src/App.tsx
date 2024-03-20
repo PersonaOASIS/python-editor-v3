@@ -64,7 +64,7 @@ const App = () => {
     forceApply: true,
   });
 
-  //deleted ProjectDropTarget remember -- added back but it might need to get changed
+  //deleted ProjectDropTarget remember -- added back but it might need to get changed -- need to take out DragDropDialog
   const deployment = useDeployment();
   const { ConsentProvider } = deployment.compliance;
 

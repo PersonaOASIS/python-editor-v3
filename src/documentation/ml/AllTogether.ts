@@ -41,9 +41,9 @@ export class DataAndTrain {
       var microbitFS = new MicropythonFsHex(hexString);
       var classes = "no";
       if (this.classNames != undefined) {
-        classes = this.classNames.toString();
+        classes = this.classNames.join(" ");
       } else {
-        classes = "shake, still";
+        classes = "shake still";
       }
       microbitFS.create("namesOfClasses.txt", classes);
       var fileContent = microbitFS.read("namesOfClasses.txt");

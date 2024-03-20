@@ -1,35 +1,12 @@
 //MLArea
 
-import { BoxProps, Divider, List, HStack, ListItem } from "@chakra-ui/layout";
-import {
-  AspectRatio,
-  Collapse,
-  Icon,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Tr,
-  useDisclosure,
-  VisuallyHidden,
-} from "@chakra-ui/react";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalOverlay,
-  ModalHeader,
-} from "@chakra-ui/modal";
-import { Link } from "@chakra-ui/react";
-import React, { ReactNode, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import AreaHeading from "../common/AreaHeading";
-import { docStyles } from "../common/documentation-styles";
+import { List } from "@chakra-ui/layout";
+import { useDisclosure } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { useIntl } from "react-intl";
 import HeadedScrollablePanel from "../common/HeadedScrollablePanel";
 import { Anchor, useRouterTabSlug, useRouterState } from "../router-hooks";
 import { useAnimationDirection } from "./common/documentation-animation-hooks";
-import Dropzone, { DropzoneState, useDropzone } from "react-dropzone";
 import CSS from "csstype";
 import { RiFolderOpenLine } from "react-icons/ri";
 import CollapsibleButton, {
@@ -37,25 +14,26 @@ import CollapsibleButton, {
 } from "../common/CollapsibleButton";
 import FileInputButton from "../common/FileInputButton";
 import { useProjectActions } from "../project/project-hooks";
-import OpenButton from "../project/OpenButton";
 import { Tooltip } from "@chakra-ui/tooltip";
-import { RiRestartLine } from "react-icons/ri";
-import AboutDialog from "../workbench/AboutDialog/AboutDialog";
 import { useCallback, useRef } from "react";
-import ModalCloseButton from "../common/ModalCloseButton";
-import { Button } from "@chakra-ui/button";
 import DragDropDialog from "./ml/DragDropDialog";
 import DocumentationBreadcrumbHeading from "./common/DocumentationBreadcrumbHeading";
 import { DataAndTrain } from "./ml/AllTogether";
+import DocumentationTopLevelItem from "./common/DocumentationTopLevelItem";
+import CodeEmbed from "./common/CodeEmbed";
 
 const dataAndTrain = new DataAndTrain();
 
 //use handleNavigate the same way reference is using, with the topic if for the return too and see if that works
 export const MLArea = () => {
   const [anchor, setAnchor] = useRouterTabSlug("modelTraining");
+  const id = anchor ? "modelCode" : undefined;
   const handleNavigate = useCallback(
     (id: string | undefined) => {
-      setAnchor(id ? { id } : undefined, "documentation-user");
+      setAnchor(
+        id && dataAndTrain.model ? { id } : undefined,
+        "documentation-user"
+      );
     },
     [setAnchor]
   );
@@ -63,6 +41,7 @@ export const MLArea = () => {
   return (
     <ActiveLevel
       key={anchor ? 0 : 1}
+      id={id}
       anchor={anchor}
       onNavigate={handleNavigate}
       direction={direction}
@@ -72,11 +51,18 @@ export const MLArea = () => {
 
 interface ActiveLevelProps {
   anchor: Anchor | undefined;
+  id: string | undefined;
   onNavigate: (state: string | undefined) => void;
   direction: "forward" | "back" | "none";
 }
 
-const ActiveLevel = ({ anchor, onNavigate, direction }: ActiveLevelProps) => {
+//Now that the CodeEmbed on its own is proven to work, make it look good and arrage itself like the ReferenceTopicEntry ones
+const ActiveLevel = ({
+  anchor,
+  id,
+  onNavigate,
+  direction,
+}: ActiveLevelProps) => {
   const intl = useIntl();
   const [, setParams] = useRouterState();
   const handleReferenceLink = useCallback(
@@ -89,15 +75,17 @@ const ActiveLevel = ({ anchor, onNavigate, direction }: ActiveLevelProps) => {
   const aboutDialogDisclosure = useDisclosure();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mlString = "Model Training";
-  const [ok, setOk] = useState(false);
-  if (ok == true) {
+  const code = "import ml\nthat = ml.this()";
+  if (id) {
     return (
       <HeadedScrollablePanel
         direction={direction}
         heading={
-          <AreaHeading
-            name={mlString}
-            description={
+          <DocumentationBreadcrumbHeading
+            parent={mlString}
+            title={mlString}
+            onBack={() => onNavigate(undefined)}
+            subtitle={
               "Import your data from https://ml-machine.org/ and train and use your model."
             }
           />
@@ -106,27 +94,28 @@ const ActiveLevel = ({ anchor, onNavigate, direction }: ActiveLevelProps) => {
         <div>
           <p>Hello</p>
         </div>
+        <CodeEmbed code={code} />
       </HeadedScrollablePanel>
     );
   }
   return (
-    <HeadedScrollablePanel
-      direction={direction}
-      heading={
-        <AreaHeading
-          name={mlString}
-          description={
-            "Import your data from https://ml-machine.org/ and train and use your model."
-          }
-        />
-      }
-    >
+    <HeadedScrollablePanel direction={direction}>
       <DragDropDialog
         isOpen={aboutDialogDisclosure.isOpen}
         onClose={aboutDialogDisclosure.onClose}
         finalFocusRef={menuButtonRef}
       />
-      <MLNode ok />
+      <List flex="1 1 auto">
+        <DocumentationTopLevelItem
+          name={mlString}
+          description={
+            "Import your data from https://ml-machine.org/ and train and use your model."
+          }
+          onForward={() => onNavigate("modelCode")}
+          type="modelTraining"
+        />
+        <MLNode />
+      </List>
     </HeadedScrollablePanel>
   );
 };
@@ -147,29 +136,26 @@ const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
   );
 };
 
-interface MLNodeProps {
-  ok: boolean;
-}
+interface MLNodeProps {}
 
-const MLNode = (ok: MLNodeProps) => {
+const MLNode = (_: MLNodeProps) => {
   const sayHi = () => {
     console.log("Hi");
   };
   const [showButton, setShowButton] = useState(false);
 
-  const reveal = () => {
+  /*const reveal = () => {
     setOk(true);
-  };
+  };*/
 
   return (
     <div style={area}>
       <OpenFileButton mode="button" minW="fit-content" />
-      <button onClick={reveal}>Reveal</button>
     </div>
   );
 };
 /*<DialogButton mode="button" minW="fit-content" />
-      
+      <button onClick={reveal}>Reveal</button>
       {showButton && <button onClick={sayHi}>Hidden</button>}*/
 
 const area: CSS.Properties = {
@@ -182,7 +168,7 @@ const area: CSS.Properties = {
   justifyContent: "center",
 };
 
-interface DialogButtonProps extends CollapsibleButtonComposableProps {}
+/*interface DialogButtonProps extends CollapsibleButtonComposableProps {}
 
 const DialogButton = (props: DialogButtonProps) => {
   const actions = useProjectActions();
@@ -206,7 +192,7 @@ const DialogButton = (props: DialogButtonProps) => {
       </Tooltip>
     </>
   );
-};
+};*/
 
 /*const dropzone: CSS.Properties = {
   display: "flex",
