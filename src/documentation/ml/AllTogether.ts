@@ -1,12 +1,9 @@
-import { VersionAction, FileSystem } from "../../fs/fs";
-import { useFileSystem } from "../../fs/fs-hooks";
 import { getLowercaseFileExtension, readFileAsText } from "../../fs/fs-util";
 import { prepData } from "./DataPrep";
 import LayersMLModel from "./LayersMLModel";
 import LayersModelTrainer, {
   LayersModelTrainingSettings,
 } from "./LayersModelTrainer";
-import { MicropythonFsHex } from "@microbit/microbit-fs";
 
 export class DataAndTrain {
   model: LayersMLModel | undefined;
@@ -19,10 +16,6 @@ export class DataAndTrain {
     const file = files[0];
     const fileText = await readFileAsText(file);
     let [trainingData, classNames] = prepData(fileText);
-    console.log("Training data:");
-    console.log(trainingData);
-    console.log("Class Names:");
-    console.log(classNames);
     this.classNames = classNames;
     const layersModelTrainingSettings: LayersModelTrainingSettings = {
       noOfEpochs: 80,
@@ -33,8 +26,6 @@ export class DataAndTrain {
     };
     let trainer = new LayersModelTrainer(layersModelTrainingSettings);
     this.model = await trainer.trainModel(trainingData);
-    console.log("Model:");
-    console.log(this.model);
     return this.classNames.join(" ");
   };
 }

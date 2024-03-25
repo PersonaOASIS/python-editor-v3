@@ -64,7 +64,6 @@ const App = () => {
     forceApply: true,
   });
 
-  //deleted ProjectDropTarget remember -- added back but it might need to get changed -- need to take out DragDropDialog
   const deployment = useDeployment();
   const { ConsentProvider } = deployment.compliance;
 
@@ -88,11 +87,6 @@ const App = () => {
                             <DialogProvider>
                               <RouterProvider>
                                 <ConsentProvider>
-                                  <DragDropDialog
-                                    isOpen={aboutDialogDisclosure.isOpen}
-                                    onClose={aboutDialogDisclosure.onClose}
-                                    finalFocusRef={menuButtonRef}
-                                  />
                                   <ProjectDropTarget>
                                     <ActiveEditorProvider>
                                       <Workbench />
