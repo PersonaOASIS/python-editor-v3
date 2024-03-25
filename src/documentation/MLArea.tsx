@@ -2,9 +2,8 @@
 
 import { List } from "@chakra-ui/layout";
 import { Box, Divider, ListItem, useDisclosure } from "@chakra-ui/react";
-import { useIntl } from "react-intl";
 import HeadedScrollablePanel from "../common/HeadedScrollablePanel";
-import { Anchor, useRouterTabSlug, useRouterState } from "../router-hooks";
+import { Anchor, useRouterTabSlug } from "../router-hooks";
 import { useAnimationDirection } from "./common/documentation-animation-hooks";
 import CSS from "csstype";
 import { RiFolderOpenLine } from "react-icons/ri";
@@ -64,12 +63,9 @@ const ActiveLevel = ({
   onNavigate,
   direction,
 }: ActiveLevelProps) => {
-  const intl = useIntl();
-  const [, setParams] = useRouterState();
   const aboutDialogDisclosure = useDisclosure();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mlString = "Model Training";
-  const code = "import ml\nthat = ml.this()";
   if (id) {
     var mlCodeCopy = {} as ToolkitTopic;
     mlCodeCopy.name = "ML Model";
