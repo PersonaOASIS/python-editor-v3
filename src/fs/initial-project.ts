@@ -43,8 +43,57 @@ while True:
     display.scroll('Hello')
 `;
 
+//remember to change in stubs to have mlreader not be an error
+export const defaultML = `# A mockup of a machine learning micropython module
+from microbit import *
+import random
+import mlreader
+
+
+def get_class_names():
+    
+    namesList = mlreader.read_class_names()
+    return namesList
+
+def current_action():
+
+    list = mlreader.read_class_names()
+    sizeList = len(list) - 1
+    rnd = random.randrange(sizeList)
+    return list[rnd]
+
+def is_action(action):
+
+    list = mlreader.read_class_names()
+    if action in list:
+        sizeList = len(list) - 1
+        rnd = random.randrange(sizeList)
+        if action == list[rnd]:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def was_action(action):
+    list = mlreader.read_class_names()
+    if action in list:
+        sizeList = len(list) - 1
+        rnd = random.randrange(sizeList)
+        if action == list[rnd]:
+            return True
+        else:
+            return False
+    else:
+        return False
+`;
+
+export const defaultText = `shake still`;
+
 export const defaultInitialProject: PythonProject = {
   files: projectFilesToBase64({
     [MAIN_FILE]: defaultMainFileContent,
+    ["ml.py"]: defaultML,
+    ["namesOfClasses.txt"]: defaultText,
   }),
 };

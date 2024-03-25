@@ -21,6 +21,8 @@ import DocumentationBreadcrumbHeading from "./common/DocumentationBreadcrumbHead
 import { DataAndTrain } from "./ml/AllTogether";
 import DocumentationTopLevelItem from "./common/DocumentationTopLevelItem";
 import CodeEmbed from "./common/CodeEmbed";
+import { useFileSystem } from "../fs/fs-hooks";
+import { VersionAction } from "../fs/fs";
 
 const dataAndTrain = new DataAndTrain();
 
@@ -147,15 +149,20 @@ const MLNode = (_: MLNodeProps) => {
   /*const reveal = () => {
     setOk(true);
   };*/
+  var fs = useFileSystem();
+  const update = () => {
+    fs.write("namesOfClasses.txt", "hello goodbye", VersionAction.MAINTAIN);
+  };
 
   return (
     <div style={area}>
       <OpenFileButton mode="button" minW="fit-content" />
+      <button onClick={update}>Update File</button>
     </div>
   );
 };
 /*<DialogButton mode="button" minW="fit-content" />
-      <button onClick={reveal}>Reveal</button>
+      
       {showButton && <button onClick={sayHi}>Hidden</button>}*/
 
 const area: CSS.Properties = {
