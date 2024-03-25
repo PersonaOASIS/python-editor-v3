@@ -125,11 +125,16 @@ const ActiveLevel = ({
 interface OpenFileButtonProps extends CollapsibleButtonComposableProps {}
 
 const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
+  var fs = useFileSystem();
+  const open = async (file: File[]): Promise<void> => {
+    const names = await dataAndTrain.open(file);
+    fs.write("namesOfClasses.txt", names, VersionAction.MAINTAIN);
+  };
   return (
     <FileInputButton
       {...props}
       text="Open file"
-      onOpen={dataAndTrain.open}
+      onOpen={open}
       data-testid="open"
       icon={<RiFolderOpenLine />}
       tooltip="Open a file."
@@ -141,29 +146,12 @@ const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
 interface MLNodeProps {}
 
 const MLNode = (_: MLNodeProps) => {
-  const sayHi = () => {
-    console.log("Hi");
-  };
-  const [showButton, setShowButton] = useState(false);
-
-  /*const reveal = () => {
-    setOk(true);
-  };*/
-  var fs = useFileSystem();
-  const update = () => {
-    fs.write("namesOfClasses.txt", "hello goodbye", VersionAction.MAINTAIN);
-  };
-
   return (
     <div style={area}>
       <OpenFileButton mode="button" minW="fit-content" />
-      <button onClick={update}>Update File</button>
     </div>
   );
 };
-/*<DialogButton mode="button" minW="fit-content" />
-      
-      {showButton && <button onClick={sayHi}>Hidden</button>}*/
 
 const area: CSS.Properties = {
   display: "flex",
@@ -174,135 +162,5 @@ const area: CSS.Properties = {
   alignItems: "center",
   justifyContent: "center",
 };
-
-/*interface DialogButtonProps extends CollapsibleButtonComposableProps {}
-
-const DialogButton = (props: DialogButtonProps) => {
-  const actions = useProjectActions();
-  const intl = useIntl();
-  const aboutDialogDisclosure = useDisclosure();
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
-  return (
-    <>
-      <DragDropDialog
-        isOpen={aboutDialogDisclosure.isOpen}
-        onClose={aboutDialogDisclosure.onClose}
-        finalFocusRef={menuButtonRef}
-      />
-      <Tooltip hasArrow label="Open a dialog to drop your file in.">
-        <CollapsibleButton
-          {...props}
-          text="Open drag-and-drop"
-          onClick={aboutDialogDisclosure.onOpen}
-          icon={<RiFolderOpenLine />}
-        />
-      </Tooltip>
-    </>
-  );
-};*/
-
-/*const dropzone: CSS.Properties = {
-  display: "flex",
-  width: "95%",
-  margin: "auto",
-  height: "550px",
-  border: "3px dotted grey",
-  textAlign: "center",
-  alignItems: "center",
-  color: "grey",
-};
-
-interface MLNodeProps {}
-
-const MLNode = (_: MLNodeProps) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 1) {
-      const file = acceptedFiles[0];
-
-      const reader = new FileReader();
-      reader.readAsText(file);
-    }
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    maxFiles: 1,
-    multiple: false,
-    noDragEventsBubbling: true,
-  });
-
-  return (
-    <div style={dropzone} {...getRootProps()}>
-      <input id="file" height="100%" {...getInputProps()} />
-      {<p>Drag 'n' drop some files here, or click to select files</p>}
-    </div>
-  );
-};
-
-//previous version before looking at HexFlashTool file
-
-/*function MLNode() {
-  const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
-  }, [])
-  // @ts-ignore
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
-  return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} type="file" />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
-    </div>
-  )
-};*/
-
-/*const MLNode = ({
-    anchor,
-    parentType,
-    ...props
-  }: ApiDocEntryNodeProps) => {
-    const [files, setFiles] = useState<(File)[]>([]);
-  const {getRootProps, getInputProps} = useDropzone();
-
-  const thumbs = files.map(file => (
-    <div key={file.name}>
-      <div>
-      {file.name}
-      </div>
-    </div>
-  ));
-
-  return (
-    <section className="container">
-      <div {...getRootProps({className: 'dropzone'})}>
-        <input {...getInputProps()} type="file" value={files}/>
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-      <aside>
-        {thumbs}
-      </aside>
-    </section>
-  );
-  };*/
-
-/*const MLNode = ({
-    anchor,
-    parentType,
-    ...props
-  }: ApiDocEntryNodeProps) => {
-
-  return (
-    <Dropzone onDrop={(files: Array<File>) => {
-    }}>
-                {(state: DropzoneState) => {
-                    return (<input {...state.getInputProps()} type="file"/>)
-                }}
-            </Dropzone>
-  );
-  };*/
 
 export default MLArea;
