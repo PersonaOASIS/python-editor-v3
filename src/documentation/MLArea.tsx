@@ -24,7 +24,6 @@ import ReferenceTopicEntry from "./reference/ReferenceTopicEntry";
 
 const dataAndTrain = new DataAndTrain();
 
-//use handleNavigate the same way reference is using, with the topic if for the return too and see if that works
 export const MLArea = () => {
   const [anchor, setAnchor] = useRouterTabSlug("modelTraining");
   const id = anchor ? "modelCode" : undefined;
@@ -56,7 +55,6 @@ interface ActiveLevelProps {
   direction: "forward" | "back" | "none";
 }
 
-//Now that the CodeEmbed on its own is proven to work, make it look good and arrage itself like the ReferenceTopicEntry ones
 const ActiveLevel = ({
   anchor,
   id,
@@ -66,6 +64,7 @@ const ActiveLevel = ({
   const aboutDialogDisclosure = useDisclosure();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mlString = "Model Training";
+  //Made all the code embeds and descriptions of the methods here. They are updated with the correct class names depending on the trained model.
   if (id) {
     var mlCodeCopy = {} as ToolkitTopic;
     mlCodeCopy.name = "ML Model";
@@ -329,6 +328,8 @@ interface OpenFileButtonProps extends CollapsibleButtonComposableProps {}
 
 const OpenFileButton = ({ children, ...props }: OpenFileButtonProps) => {
   var fs = useFileSystem();
+  //Does the functionality of the file opening and model training and then makes sure the text file is updated
+  //in the file system with the names in the model.
   const open = async (file: File[]): Promise<void> => {
     const names = await dataAndTrain.open(file);
     fs.write("namesOfClasses.txt", names, VersionAction.MAINTAIN);

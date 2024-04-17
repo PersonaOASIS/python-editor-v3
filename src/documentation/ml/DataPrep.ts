@@ -1,3 +1,4 @@
+//Data types to facilitate the model training.
 type PersistantGestureData = {
   name: string;
   ID: number;
@@ -21,6 +22,7 @@ export type TrainingData = {
   }[];
 };
 
+//Parses the passed JSON string, extracts the class names and applies the filters on the data for the model training.
 export const prepData = (jsonString: string): [TrainingData, string[]] => {
   const jsonObjects = JSON.parse(jsonString) as PersistantGestureData[];
 
@@ -55,6 +57,7 @@ const buildFilteredSamples = (recordings: RecordingData[]) => {
   });
 };
 
+//Applies each of the 8 filters in order.
 const applyFilters = (data: number[]): number[] => {
   const filteredData: number[] = [];
   //MAX filter

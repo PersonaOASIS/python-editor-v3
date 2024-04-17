@@ -9,6 +9,8 @@ export class DataAndTrain {
   model: LayersMLModel | undefined;
   classNames: string[] | undefined;
 
+  //Receives the file, sends the data to be prepared to be inputted into the model,
+  //and then trains the model, saving it and the class names into the object.
   open = async (files: File[]): Promise<string> => {
     const extensions = new Set(
       files.map((f) => getLowercaseFileExtension(f.name))
