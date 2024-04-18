@@ -1,3 +1,25 @@
+# Machine learning addition to the micro:bit Python Editor V3
+
+This project details the integration of machine learning into the micro:bit Python Editor V3 project. The end goal of this project is to enable a machine learning model to run on the device and for it to be accessible to code made in the micro:bit Python Editor.
+
+The machine learning model of this projects functions the same as the one used in the [ML-Machine](https://ml-machine.org/) project, whose source code can be found at https://github.com/microbit-foundation/cctd-ml-machine. The user is expected to record training data on the aformentioned website before the use of this project. 
+
+After that data is downloaded, the file can be opened on the Python Editor in the new tab called Machine Learning. By doing so, a machine learning model will be trained in browser and the names of the classes of said model, set by the user and present in the initial data recordings file, will be saved to the "namesOfClasses.txt" file in the project tab.
+
+Once the model has been trained, the user can click on the header button of the Machine Learning tab to display the methods used with the machine learning model, in a similar fashion to the API and Reference tabs. For the last methods, where a class name has to be chosen, similar to the "is_gesture" of the Accelerometer module, the drop down menu that allows the name to be picked will contain the names of the classes of the currently trained and stored module. The user is able to return to the model training page, open a new dataset file, which will in turn train a new model. This will result in different class names being stored in the "namesOfClasses.txt" file and these new names also being available in the drop down menu of the methods.
+
+While the current state of the project does produce a machine learning module in browser, this module is not added to the device alongside the user's code, as intended. However, the aformentioned "namesOfClasses.txt" file is added, which is to be used, both in the current state of the project and the final one, for the device to have a reference of the module's class names, as these are not included in the machine learning model. Additionally, a "ml.py" file is added to the initial project, which uses a new MicroPython module to read the class names from the "namesOfClasses.txt" file in the micro:bit's file system, and then simulates the machine learning model running on the device by choosing a random class name from the read list.
+
+The end result of this project is a new tab to facilitate the training of a machine learning model from data recorded on the [ML-Machine](https://ml-machine.org/) website and the simulation of the model running on the micro:bit device. The user can write code to use the "model" and flash the resulting project on the device.
+
+## Additional materials needed for the development of this project
+
+For this version of the micro:bit Python Editor to be able to compile code correctly in MicroPython and run on the device, changes had to be made to the original https://github.com/microbit-foundation/micropython-microbit-v2 and https://github.com/microbit-foundation/micropython-microbit-stubs GitHub repositories, which can be found at https://github.com/PersonaOASIS/micropython-microbit-v2 and https://github.com/PersonaOASIS/micropython-microbit-stubs respectively. 
+It is not necessary to run these two modified projects locally alongside the micro:bit Python Editor, as they were used to produce hex and stub files which have been added to this project. However, if, for further development of this project, changes to the MicroPython code are required, the aformentioned modified GitHub repositories will need to be changed and the resulting hex and stub files will need to replace the existing ones of this project.
+
+
+The following is the original README content of the micro:bit Python Editor V3, included for further reference and for the way to run this project locally, which remains the same as detailed below:
+
 # micro:bit Python Editor V3
 
 This project is a web-based code editor that targets the [MicroPython](https://micropython.org) version of the [Python programming language](http://python.org/).
