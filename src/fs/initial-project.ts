@@ -43,7 +43,7 @@ while True:
     display.scroll('Hello')
 `;
 
-//remember to change in stubs to have mlreader not be an error
+// Added files to the initial project to enable model class name retention and methods to simulate the model running on the device 
 export const defaultML = `# A mockup of a machine learning micropython module
 from microbit import *
 import random
